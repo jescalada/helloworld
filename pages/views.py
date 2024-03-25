@@ -1,11 +1,7 @@
-from django.shortcuts import render, HttpResponseRedirect
-from django.http import Http404
-from django.urls import reverse
-from django.views.generic import TemplateView
-
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-
+from pages.models import Item, ToDoList
+from django.contrib.auth import logout
 
 def homePost(request):
     # Use request object to extract choice.
@@ -79,3 +75,43 @@ def aboutPageView(request):
 
 def juanPageView(request):
     return render(request, 'juan.html')
+
+def todos(request):
+    print("*** Inside todos()")
+    items = Item.objects
+    itemErrandDetail = items.select_related('todolist')
+    print(itemErrandDetail[0].todolist.name)
+    return render(request, 'ToDoItems.html',
+                {'ToDoItemDetail': itemErrandDetail})
+
+from django.shortcuts import render, redirect
+from .forms import RegisterForm
+
+def register(response):
+    # Handle POST request.
+    if response.method == "POST":
+        form = RegisterForm(response.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('message',
+                                                kwargs={'msg': "Successfully registered!", 'title': "Success!"}, ))
+
+    # Handle GET request.
+    else:
+        form = RegisterForm()
+    return render(response, "registration/register.html", {"form":form})
+
+def message(request, msg, title):
+    return render(request, 'message.html', {'msg': msg, 'title': title })
+
+def logoutView(request):
+    logout(request)
+    print("*****  You are logged out.")
+    return HttpResponseRedirect(reverse('home' ))
+
+def secretArea(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('message',
+               kwargs={'msg': "Please login to access this page.",
+                       'title': "Login required."}, ))
+    return render(request, 'secret.html', {'useremail': request.user.email })
