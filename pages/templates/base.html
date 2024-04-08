@@ -32,6 +32,34 @@
             margin-left:160px;
             padding: 0px 10px;
         }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            background-color: #f1f1f1;
+        }
+
+        thead {
+            background-color: #333;
+            color: white;
+        }
+
+        tbody {
+            background-color: #f1f1f1;
+        }
+
+        button {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
     </style>
 
     <meta charset="utf-8">
@@ -39,24 +67,14 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <title>{% block title %}Pat's Site{% endblock %}</title>
+    <title>{% block title %}Juan's Site{% endblock %}</title>
 </head>
 
 <body>
     <div class="sidenav">
-        <a href="{% url 'home' %}">Home</a> |
-        <a href="{% url 'todos' %}">Todos</a> |
+        <a href="{% url 'home' %}">Banana Classifier</a> |
         <a href="{% url 'about' %}">About</a>
         <hr style="background-color: white;">
-        {% if user.is_authenticated %}
-        <b style="color:white;" class="h4 m-3">Hi, {{ user.username }}!</b>
-        <a href="{% url 'logout' %}">Logout</a>
-        <a href="{% url 'secret' %}">Secret</a>
-        {% endif %}
-        {% if not user.is_authenticated %}
-        <a href="{% url 'login' %}">Login</a>
-        <a href="{% url 'register' %}">Register</a>
-        {% endif %}
     </div>
     <div id="content" name="content" class="main">
         <div class="row justify-content-center">
